@@ -1,0 +1,28 @@
+theremin:
+  pitch_control:
+    move_group: right_manipulator
+    antenna_frame: theremin_pitch_antenna
+    min_distance: 0.05
+    max_distance: 0.5
+    control_axis: x
+    control_mode: linear
+    x_offset: 0.0
+    y_offset: 0.05
+    z_offset: 0.15
+    pitch_offset: 0.0
+    roll_offset: 0.0
+    yaw_offset: 0.0
+
+  volume_control:
+    move_group: left_manipulator
+    antenna_frame: theremin_volume_antenna
+    min_distance: 0.05
+    max_distance: 0.5
+    control_axis: z
+    control_mode: linear
+    x_offset: -0.03
+    y_offset: 0.02
+    z_offset: 0.0
+    pitch_offset: 0.0
+    roll_offset: 0.0
+    yaw_offset: 0.0

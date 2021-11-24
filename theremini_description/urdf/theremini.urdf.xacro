@@ -1,0 +1,171 @@
+<?xml version="1.0" ?>
+<robot name="theremini" xmlns:xacro="http://wiki.ros.org/xacro">
+  <!--
+    A slightly abstracted theremin macro on a post.
+
+    The base-link of the macro is the bottom of the stand.  If no stand is needed, set stand_height to 0.0;
+    this will put the base of the stand flush with the underside of the main body of the instrument
+
+    Because I have zero modelling skills, the actual model looks more like an Etherwave than a Theremini, but
+    the dimensions are correct for a squared-off Theremini.
+  -->
+  <xacro:macro name="theremini" params="parent prefix stand_height:=1.0 *origin">
+    <xacro:property name="pi" value="3.14159265359" />
+
+    <link name="${prefix}_base_link">
+      <visual>
+        <geometry>
+          <cylinder radius="0.01" length="${stand_height}" />
+        </geometry>
+        <origin xyz="0 0 ${stand_height/2}" rpy="0 0 0" />
+        <material name="grey">
+          <color rgba="0.5 0.5 0.5 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.01" length="${stand_height}" />
+        </geometry>
+        <origin xyz="0 0 ${stand_height/2}" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="${prefix}_base_link_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="${prefix}_base_link" />
+      <xacro:insert_block name="origin" />
+    </joint>
+
+    <link name="${prefix}_body">
+      <visual>
+        <geometry>
+          <box size="0.17 0.5 0.055" />
+        </geometry>
+        <origin xyz="0 0 ${0.055/2}" rpy="0 0 0" />
+        <material name="white">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.17 0.5 0.055" />
+        </geometry>
+        <origin xyz="0 0 ${0.055/2}" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="${prefix}_body_joint" type="fixed">
+      <parent link="${prefix}_base_link" />
+      <child link="${prefix}_body" />
+      <origin xyz="0 0 ${stand_height}" rpy="0 0 0" />
+    </joint>
+
+    <link name="${prefix}_pitch_antenna">
+      <visual>
+        <geometry>
+          <cylinder radius="0.005" length="0.31" />
+        </geometry>
+        <origin xyz="0 0 ${0.31/2}" rpy="0 0 0" />
+        <material name="grey">
+          <color rgba="0.5 0.5 0.5 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.005" length="0.31" />
+        </geometry>
+        <origin xyz="0 0 ${0.31/2}" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="${prefix}_pitch_antenna_joint" type="fixed">
+      <parent link="${prefix}_body" />
+      <child link="${prefix}_pitch_antenna" />
+      <origin xyz="0 -0.22 0.01" rpy="0 0 0" />
+    </joint>
+
+    <link name="${prefix}_volume_antenna">
+      <visual>
+        <geometry>
+          <cylinder radius="0.08" length="0.003" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="grey">
+          <color rgba="0.5 0.5 0.5 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.08" length="0.003" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="${prefix}_volume_antenna_joint" type="fixed">
+      <parent link="${prefix}_body" />
+      <child link="${prefix}_volume_antenna" />
+      <origin xyz="0 0.25 0.0275" rpy="0 0 0" />
+    </joint>
+
+
+    <!-- The control box is its own sub-assembly -->
+    <xacro:property name="control_box_depth" value="0.06" />
+    <link name="${prefix}_controls">
+      <visual>
+        <geometry>
+          <box size="${control_box_depth} 0.25 0.055" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="black">
+          <color rgba="0 0 0 1" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${control_box_depth} 0.25 0.055" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="${prefix}_controls_joint" type="fixed">
+      <parent link="${prefix}_body" type="fixed" />
+      <child link="${prefix}_controls" />
+      <origin xyz="-0.05 0 0.05" rpy="0 -${pi/3} ${pi}" />
+    </joint>
+
+    <xacro:macro name="control_knob" params="name *origin">
+      <link name="${name}_knob">
+        <visual>
+          <geometry>
+            <cylinder radius="0.007" length="0.016" />
+          </geometry>
+          <origin xyz="0 0 ${0.007/2}" rpy="0 0 0" />
+          <material name="grey">
+            <color rgba="0.5 0.5 0.5 1" />
+          </material>
+        </visual>
+        <collision>
+          <geometry>
+            <cylinder radius="0.007" length="0.016" />
+          </geometry>
+          <origin xyz="0 0 ${0.007/2}" rpy="0 0 0" />
+        </collision>
+      </link>
+      <joint name="${name}_knob_joint" type="fixed">
+        <parent link="${prefix}_controls" />
+        <child link="${name}_knob" />
+        <xacro:insert_block name="origin" />
+      </joint>
+    </xacro:macro>
+    <xacro:control_knob name="volume">
+      <origin xyz="${control_box_depth/2} 0.1 0" rpy="0 ${pi/2} 0" />
+    </xacro:control_knob>
+    <xacro:control_knob name="presets">
+      <origin xyz="${control_box_depth/2} -0.1 0" rpy="0 ${pi/2} 0" />
+    </xacro:control_knob>
+    <xacro:control_knob name="pitch_correction">
+      <origin xyz="${control_box_depth/2} 0.07 0" rpy="0 ${pi/2} 0" />
+    </xacro:control_knob>
+    <xacro:control_knob name="effect_amount">
+      <origin xyz="${control_box_depth/2} -0.07 0" rpy="0 ${pi/2} 0" />
+    </xacro:control_knob>
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>theremini_description</name>
+  <version>0.0.0</version>
+  <description>The theremini_description package</description>
+
+  <maintainer email="civerachb@clearpathrobotics.com">Chris Iverach-Brereton</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>
