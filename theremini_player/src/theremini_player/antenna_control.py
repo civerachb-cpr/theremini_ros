@@ -3,8 +3,7 @@
 import rospy
 import tf2_ros
 import tf2_geometry_msgs
-from tf.transformations import euler_from_quaternion
-from tf.transformations import quaterion_from_euler
+import tf.transformations
 
 from math import pi
 
@@ -93,11 +92,11 @@ class AntennaControl:
         antenna_pose = self.get_antenna_pose()
         q = geometry_msgs.msg.Quaternion(antenna_pose.orientation.x, antenna_pose.orientation.y,
             antenna_pose.orientation.z, antenna_pose.orientation.w)
-        euler_angles = euler_from_quaternion(q)
+        euler_angles = tf.transformations.euler_from_quaternion(q)
         euler_angles.x += self.roll_offset
         euler_angles.y += self.pitch_offset
         euler_angles.z += self.yaw_offset
-        pose.orientation = quaterion_from_euler(euler_angles)
+        pose.orientation = tf.transformations.quaterion_from_euler(euler_angles)
 
         # apply the static XYZ offsets relative to the antenna origin
         pose.position.x = antenna_pose.position.x + self.x_offset
