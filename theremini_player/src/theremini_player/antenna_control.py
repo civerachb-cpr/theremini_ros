@@ -111,7 +111,7 @@ class AntennaControl:
             pose.position.y += distance
         elif self.control_axis == 'z':
             pose.position.z += distance
-        else
+        else:
             rospy.logerr("Unknown control axis {0}".format(self.control_axis))
 
         # move to the pose calculated above
