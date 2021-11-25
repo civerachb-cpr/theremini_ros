@@ -3,7 +3,7 @@ theremin:
     move_group: right_manipulator
     antenna_frame: theremin_pitch_antenna
     min_distance: 0.05
-    max_distance: 0.35
+    max_distance: 0.25
     control_axis: x
     control_mode: linear
     x_offset: -0.3

@@ -26,7 +26,7 @@ class RandomPlayer:
         self.volume_antenna.home()
         self.pitch_antenna.home()
 
-        notes_before_volume_change = rand_range(1,8)
+        notes_before_volume_change = int(rand_range(1,8))
 
         while not rospy.is_shutdown():
             if not self.is_playing:
@@ -38,7 +38,7 @@ class RandomPlayer:
 
                 if notes_before_volume_change == 0:
                     self.choose_new_volume()
-                    notes_before_volume_change = rand_range(1,8)
+                    notes_before_volume_change = int(rand_range(1,8))
 
     def choose_new_volume(self):
         volume = rand_range(self.volume_antenna.min_distance, self.volume_antenna.max_distance)
