@@ -27,7 +27,7 @@ class AntennaControl:
         self.move_group = moveit_commander.MoveGroupCommander(self.move_group_name)
 
         self.reference_frame = self.move_group.get_planning_frame()
-        self.ee_link = group.get_end_effector_link()
+        self.ee_link = self.move_group.get_end_effector_link()
 
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(100.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
