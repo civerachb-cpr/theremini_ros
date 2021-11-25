@@ -23,6 +23,9 @@ class RandomPlayer:
     def run(self):
         self.run_sub = rospy.Subscriber('start_stop_theremin', Bool, start_stop_callback, callback_args=self)
 
+        self.volume_antenna.home()
+        self.pitch_antenna.home()
+
         notes_before_volume_change = rand_range(1,8)
 
         while not rospy.is_shutdown():
