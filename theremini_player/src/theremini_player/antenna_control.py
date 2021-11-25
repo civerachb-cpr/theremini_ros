@@ -92,16 +92,22 @@ class AntennaControl:
         antenna_pose = self.get_antenna_pose()
         q = geometry_msgs.msg.Quaternion(antenna_pose.orientation.x, antenna_pose.orientation.y,
             antenna_pose.orientation.z, antenna_pose.orientation.w)
+        q = [q.x, q.y, q.z, q.w]
         euler_angles = tf.transformations.euler_from_quaternion(q)
-        euler_angles.x += self.roll_offset
-        euler_angles.y += self.pitch_offset
-        euler_angles.z += self.yaw_offset
-        pose.orientation = tf.transformations.quaterion_from_euler(euler_angles)
+        euler_angles = [euler_angles[0], euler_angles[1], euler_angles[2]]
+        euler_angles[0] += self.roll_offset
+        euler_angles[1] += self.pitch_offset
+        euler_angles[2] += self.yaw_offset
+        q = tf.transformations.quaternion_from_euler(euler_angles[0], euler_angles[1], euler_angles[2])
+        pose.orientation.x = q[0]
+        pose.orientation.y = q[1]
+        pose.orientation.z = q[2]
+        pose.orientation.w = q[3]
 
         # apply the static XYZ offsets relative to the antenna origin
         pose.position.x = antenna_pose.position.x + self.x_offset
-        pose.position.y = antenna_pose.position.x + self.y_offset
-        pose.position.z = antenna_pose.position.x + self.z_offset
+        pose.position.y = antenna_pose.position.y + self.y_offset
+        pose.position.z = antenna_pose.position.z + self.z_offset
 
         # apply the desired distance to the correct axis
         if self.control_axis == 'x':
@@ -114,7 +120,7 @@ class AntennaControl:
             rospy.logerr("Unknown control axis {0}".format(self.control_axis))
 
         # move to the pose calculated above
-        rospy.logdebug("{0} target pose\n{1}".format(self.mode, pose))
+        rospy.logerr("{0} target pose\n{1}".format(self.mode, pose))
         self.move_group.set_pose_target(pose)
         plan = self.move_group.go(wait=wait)
 
@@ -126,7 +132,7 @@ class AntennaControl:
 
     def stop(self):
         self.move_group.stop()
-        group.clear_pose_targets()
+        self.move_group.clear_pose_targets()
 
     def home(self):
         self.move_to(0, wait=True)
