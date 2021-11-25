@@ -128,3 +128,6 @@ class AntennaControl:
     def stop(self):
         self.move_group.stop()
         group.clear_pose_targets()
+
+    def home(self):
+        self.move_to(0, wait=True)
