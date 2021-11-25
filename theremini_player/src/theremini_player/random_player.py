@@ -34,15 +34,13 @@ class RandomPlayer:
             else:
                 pitch = rand_range(self.pitch_antenna.min_distance, self.pitch_antenna.max_distance)
                 self.pitch_antenna.move_to(pitch, wait=True)
-                notes_before_volume_change -= 1
+                notes_before_volume_change = notes_before_volume_change - 1
 
                 if notes_before_volume_change == 0:
-                    self.choose_new_volume()
+                    volume = rand_range(self.volume_antenna.min_distance, self.volume_antenna.max_distance)
+                    self.volume_antenna.move_to(volume, wait=True)
                     notes_before_volume_change = int(rand_range(1,8))
 
-    def choose_new_volume(self):
-        volume = rand_range(self.volume_antenna.min_distance, self.volume_antenna.max_distance)
-        self.volume_antenna.move_to(volume, wait=False)
 
     def start_stop_callback(self, data):
         was_playing = self.is_playing
