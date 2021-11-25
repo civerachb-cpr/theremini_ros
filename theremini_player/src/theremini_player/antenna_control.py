@@ -64,7 +64,7 @@ class AntennaControl:
         """
         Get the pose of the antenna relative to this arm's planning frame
         """
-        tf = self.tf_buffer.lookup_transform(self.antenna_frame, self.reference_frame, rospy.Duration(0))
+        tf = self.tf_buffer.lookup_transform(self.reference_frame, self.antenna_frame, rospy.Duration(0))
         pose = geometry_msgs.msg.Pose()
 
         pose.position.x = tf.transform.translation.x
@@ -120,14 +120,9 @@ class AntennaControl:
             rospy.logerr("Unknown control axis {0}".format(self.control_axis))
 
         # move to the pose calculated above
-        rospy.logerr("{0} target pose\n{1}".format(self.mode, pose))
+        rospy.logerr("{0} Goal Pose\n{1}".format(self.mode, pose))
         self.move_group.set_pose_target(pose)
         plan = self.move_group.go(wait=wait)
-
-        if wait:
-            # if we waited, make sure there's no residual movement
-            # and clear the planned poses
-            self.stop()
 
 
     def stop(self):

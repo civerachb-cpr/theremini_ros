@@ -11,7 +11,7 @@ def rand_range(min, max):
     return random.random() * (max - min) + min
 
 def start_stop_callback(data, arg):
-    arg.start_stop_callback(arg)
+    arg.start_stop_callback(data)
 
 class RandomPlayer:
     def __init__(self):
@@ -21,14 +21,25 @@ class RandomPlayer:
         self.is_playing = False
 
     def run(self):
-        self.pitch_thread = Thread(target=self.pitch_thread_fn)
-        self.volume_thread = Thread(target=self.volume_thread_fn)
+        self.run_sub = rospy.Subscriber('start_stop_theremin', Bool, start_stop_callback, callback_args=self)
 
-        self.run_sub = rospy.Subscriber('start_stop', Bool, start_stop_callback, callback_args=self)
+        notes_before_volume_change = rand_range(1,8)
 
-        self.pitch_thread.start()
-        self.volume_thread.start()
-        rospy.spin()
+        while not rospy.is_shutdown():
+            if not self.is_playing:
+                rospy.sleep(0.1)
+            else:
+                pitch = rand_range(self.pitch_antenna.min_distance, self.pitch_antenna.max_distance)
+                self.pitch_antenna.move_to(pitch, wait=True)
+                notes_before_volume_change -= 1
+
+                if notes_before_volume_change == 0:
+                    self.choose_new_volume()
+                    notes_before_volume_change = rand_range(1,8)
+
+    def choose_new_volume(self):
+        volume = rand_range(self.volume_antenna.min_distance, self.volume_antenna.max_distance)
+        self.volume_antenna.move_to(volume, wait=False)
 
     def start_stop_callback(self, data):
         was_playing = self.is_playing
@@ -41,27 +52,3 @@ class RandomPlayer:
                 rospy.logdebug("Received stop signal!")
                 pitch_antenna.stop()
                 volume_antenna.stop()
-
-    def pitch_thread_fn(self):
-        rospy.logdebug("Starting pitch-control thread")
-
-        self.pitch_antenna.home()
-
-        while not rospy.is_shutdown:
-            if self.is_playing:
-                pitch = rand_range(self.pitch_antenna.min_distance, self.pitch_antenna.max_distance)
-                self.pitch_antenna.move_to(pitch, wait=True)
-            else:
-                rospy.sleep(0.1)
-
-    def volume_thread_fn(self):
-        rospy.logdebug("Starting volume-control thread")
-
-        self.volume_antenna.home()
-
-        while not rospy.is_shutdown():
-            if self.is_playing:
-                volume = rand_range(self.volume_antenna.min_distance, self.volume_antenna.max_distance)
-                self.volume_antenna.move_to(volume, wait=True)
-            else:
-                rospy.sleep(0.1)

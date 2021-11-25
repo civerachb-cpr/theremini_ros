@@ -3,13 +3,13 @@ theremin:
     move_group: right_manipulator
     antenna_frame: theremin_pitch_antenna
     min_distance: 0.05
-    max_distance: 0.5
+    max_distance: 0.35
     control_axis: x
     control_mode: linear
-    x_offset: 0.0
+    x_offset: -0.3
     y_offset: 0.05
     z_offset: 0.15
-    pitch_offset: 0.0
+    pitch_offset: 1.57079632679
     roll_offset: 0.0
     yaw_offset: 0.0
 
@@ -17,12 +17,12 @@ theremin:
     move_group: left_manipulator
     antenna_frame: theremin_volume_antenna
     min_distance: 0.05
-    max_distance: 0.5
+    max_distance: 0.25
     control_axis: z
     control_mode: linear
-    x_offset: -0.03
+    x_offset: -0.3
     y_offset: 0.02
-    z_offset: 0.0
-    pitch_offset: 0.0
+    z_offset: 0.02
+    pitch_offset: 1.57079632679
     roll_offset: 0.0
     yaw_offset: 0.0
