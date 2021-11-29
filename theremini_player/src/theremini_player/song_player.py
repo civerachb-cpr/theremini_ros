@@ -44,13 +44,20 @@ class SongPlayer:
         for n in self.notes:
             notes.append(Note(n['note'], n['duration']))
         self.notes = notes
-        
+
 
     def run(self):
         self.run_sub = rospy.Subscriber('start_stop_theremin', Bool, start_stop_callback, callback_args=self)
 
         self.volume_antenna.home()
         self.pitch_antenna.home()
+
+        # move to the starting postion
+        start_pitch = self.note_to_position(self.notes[0])
+        self.pitch_antenna.move_to(start_pitch, wait=True)
+
+        rospy.loginfo("In the starting position. Last chance to make adjustments to the theremin!")
+        rospy.loginfo("Publish `true` to /start_stop_theremin to start playing!")
 
         while not rospy.is_shutdown():
             if not self.is_running:
@@ -72,6 +79,9 @@ class SongPlayer:
 
     def start_song(self):
         next_note = 0
+
+        # move the volume hand up so there's sound!
+        self.volume_antenna.move_to(self.volume, wait=True)
 
         self.last_note = None
         while self.is_running and next_note < len(self.notes) and not rospy.is_shutdown():
