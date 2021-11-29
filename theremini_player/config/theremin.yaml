@@ -1,9 +1,13 @@
 theremin:
+  # Note on the XYZ + RPY offsets:
+  # - XYZ offset is measured in the orientation of the move_group's planning frame, but indicates
+  #   distance from the antenna's origin link
+  # - RPY offset is measured relative to the move_group's planning link, e.g. base_link
   pitch_control:
     move_group: right_manipulator
     antenna_frame: theremin_pitch_antenna
     min_distance: 0.05
-    max_distance: 0.25
+    max_distance: 0.5
     control_axis: x
     control_mode: linear
     x_offset: -0.02
