@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:include filename="$(find boxer_kinova_description)/urdf/boxer_dual_gen3_robotiq_2f_85_description.urdf.xacro" />
+
+  <xacro:include filename="$(find theremini_description)/urdf/theremini.urdf.xacro" />
+  <xacro:theremini parent="base_footprint" stand_height="1.0" prefix="theremin">
+    <origin xyz="0.75 0 0" rpy="0 0 0" />
+  </xacro:theremini>
+</robot>

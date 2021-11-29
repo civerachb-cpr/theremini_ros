@@ -1,0 +1,148 @@
+song:
+  name: "Jingle Bells"
+
+  # Theremini presets; make sure these settings exactly match the scale and key preset of the instrument!
+  # We leverage the theremini's auto-tune pretty hard, so if at all possible, crank-up the pitch correction
+  scale: "ionian"
+  key: "g"
+
+  # how far do we move between notes in the given scale
+  # based largely on how the instrument is calibrated
+  note_scale: 0.01
+
+  # how far from the pitch antenna do we need to be to play the root of the scale
+  root_distance: 0.23
+  root: g5
+
+  # because we only move one arm at a time, play the whole song at a fixed volume distance
+  volume: 0.15
+
+
+  # Note array
+  # Each note is defined by its pitch (string) and a duration multiplier
+  # based on https://www.virtualsheetmusic.com/score/JingleBellsPf.html
+  # For convenience there's a blank line between measures
+  bpm: 90
+  notes:
+    - note: "d5"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "a5"
+      duration: 1.0
+    - note: "g5"
+      duration: 1.0
+
+    - note: "d5"
+      duration: 3.0
+    - note: "d5"
+      duration: 0.5
+    - note: "d5"
+      duration: 0.5
+
+    - note: "d5"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "a5"
+      duration: 1.0
+    - note: "g5"
+      duration: 1.0
+
+    - note: "e5"
+      duration: 3.0
+    - note: "e5"
+      duration: 1.0
+
+    - note: "e5"
+      duration: 1.0
+    - note: "c6"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "a5"
+      duration: 1.0
+
+    - note: "f5"      # technically F#, but the scale preset takes care of that for us
+      duration: 3.0
+    - note: "f5"      # same as above
+      duration: 1.0
+
+    - note: "d6"
+      duration: 1.0
+    - note: "d6"
+      duration: 1.0
+    - note: "c6"
+      duration: 1.0
+    - note: "a5"
+      duration: 1.0
+
+    - note: "b5"
+      duration: 4.0
+
+    # The original sheet music repeats all of the above a second time
+    # but for the sake of testing & sanity, just skip to the chorus
+
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 2.0
+
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 2.0
+
+    - note: "b5"
+      duration: 1.0
+    - note: "d5"
+      duration: 1.0
+    - note: "g5"
+      duration: 1.5
+    - note: "a5"
+      duration: 0.5
+
+    - note: "b5"
+      duration: 3.0
+    - note: "-"
+      duration: 1.0
+
+    - note: "c6"
+      duration: 1.0
+    - note: "c6"
+      duration: 1.0
+    - note: "c6"
+      duration: 1.5
+    - note: "c6"
+      duration: 0.5
+
+    - note: "c6"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 1.0
+    - note: "b5"
+      duration: 0.5
+    - note: "b5"
+      duration: 0.5
+
+    - note: "d6"
+      duration: 1.0
+    - note: "d6"
+      duration: 1.0
+    - note: "c6"
+      duration: 1.0
+    - note: "a5"
+      duration: 1.0
+
+    - note: "g5"
+      duration: 2.0
+    - note: "g5"
+      duration: 1.0
+    - note: "-"
+      duration: 1.0

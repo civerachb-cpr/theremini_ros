@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="song" default="jingle_bells" />
+  
+  <rosparam command="load" file="$(find theremini_player)/config/theremin.yaml" />
+  <rosparam command="load" file="$(find theremini_player)/config/$(arg song).yaml" />
+
+  <node name="random_theremin" pkg="theremini_player" type="song" />
+</launch>

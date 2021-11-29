@@ -32,6 +32,14 @@ class AntennaControl:
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(100.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
 
+        # determine a static quaternion for the hand position
+        q = tf.transformations.quaternion_from_euler(self.roll_offset, self.pitch_offset, self.roll_offset)
+        self.hand_orientation = geometry_msgs.msg.Quaternion()
+        self.hand_orientation.x = q[0]
+        self.hand_orientation.y = q[1]
+        self.hand_orientation.z = q[2]
+        self.hand_orientation.w = q[3]
+
     def load_params(self):
         self.move_group_name = rospy.get_param('theremin/{0}/move_group'.format(self.mode))
         self.antenna_frame = rospy.get_param('theremin/{0}/antenna_frame'.format(self.mode))
@@ -84,30 +92,16 @@ class AntennaControl:
         If wait is True, then we block further execution until the trajectory has stopped
         """
 
+        antenna_pose = self.get_antenna_pose()
+
         # create a pose object we'll use to set the ee_link position
         pose = geometry_msgs.msg.Pose()
-
-        # get the position of the antenna we're manipulating
-        # and then apply our static RPY offsets
-        antenna_pose = self.get_antenna_pose()
-        q = geometry_msgs.msg.Quaternion(antenna_pose.orientation.x, antenna_pose.orientation.y,
-            antenna_pose.orientation.z, antenna_pose.orientation.w)
-        q = [q.x, q.y, q.z, q.w]
-        euler_angles = tf.transformations.euler_from_quaternion(q)
-        euler_angles = [euler_angles[0], euler_angles[1], euler_angles[2]]
-        euler_angles[0] += self.roll_offset
-        euler_angles[1] += self.pitch_offset
-        euler_angles[2] += self.yaw_offset
-        q = tf.transformations.quaternion_from_euler(euler_angles[0], euler_angles[1], euler_angles[2])
-        pose.orientation.x = q[0]
-        pose.orientation.y = q[1]
-        pose.orientation.z = q[2]
-        pose.orientation.w = q[3]
 
         # apply the static XYZ offsets relative to the antenna origin
         pose.position.x = antenna_pose.position.x + self.x_offset
         pose.position.y = antenna_pose.position.y + self.y_offset
         pose.position.z = antenna_pose.position.z + self.z_offset
+
 
         # apply the desired distance to the correct axis
         if self.control_axis == 'x':
@@ -118,6 +112,9 @@ class AntennaControl:
             pose.position.z += distance
         else:
             rospy.logerr("Unknown control axis {0}".format(self.control_axis))
+
+        # orient the hand correctly
+        pose.orientation = self.hand_orientation
 
         # move to the pose calculated above
         rospy.logerr("{0} Goal Pose\n{1}".format(self.mode, pose))

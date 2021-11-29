@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+"""
+Play a specific song, defined in the corresponding yaml file
+"""
+
+import rospy
+from theremini_player.song_player import SongPlayer
+
+if __name__=='__main__':
+    rospy.init_node('theremin_song')
+    player = SongPlayer()
+    player.run()
