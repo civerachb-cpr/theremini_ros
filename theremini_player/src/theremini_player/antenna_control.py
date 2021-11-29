@@ -105,7 +105,7 @@ class AntennaControl:
 
         # apply the desired distance to the correct axis
         if self.control_axis == 'x':
-            pose.position.x += distance
+            pose.position.x -= distance   # larger distance from the antenna means moving the hand closer!
         elif self.control_axis == 'y':
             pose.position.y += distance
         elif self.control_axis == 'z':
