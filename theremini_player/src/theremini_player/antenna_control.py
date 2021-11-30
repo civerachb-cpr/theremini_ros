@@ -92,6 +92,11 @@ class AntennaControl:
         If wait is True, then we block further execution until the trajectory has stopped
         """
 
+        if distance < self.min_distance:
+            distance = self.min_distance
+        elif distance > self.max_distance:
+            distance = self.max_distance
+
         antenna_pose = self.get_antenna_pose()
 
         # create a pose object we'll use to set the ee_link position
@@ -127,4 +132,7 @@ class AntennaControl:
         self.move_group.clear_pose_targets()
 
     def home(self):
-        self.move_to(0, wait=True)
+        self.move_to(self.min_distance, wait=True)
+
+    def far(self):
+        self.move_to(self.max_distance, wait=True)
