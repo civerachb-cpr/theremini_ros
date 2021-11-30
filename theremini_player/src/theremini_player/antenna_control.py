@@ -117,7 +117,7 @@ class AntennaControl:
         pose.orientation = self.hand_orientation
 
         # move to the pose calculated above
-        rospy.logerr("{0} Goal Pose\n{1}".format(self.mode, pose))
+        rospy.logdebug("{0} Goal Pose\n{1}".format(self.mode, pose))
         self.move_group.set_pose_target(pose)
         plan = self.move_group.go(wait=wait)
 

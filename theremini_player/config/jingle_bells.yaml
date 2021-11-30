@@ -8,7 +8,7 @@ song:
 
   # how far do we move between notes in the given scale
   # based largely on how the instrument is calibrated
-  note_scale: 0.01
+  note_scale: 0.03
 
   # how far from the pitch antenna do we need to be to play the root of the scale
   root_distance: 0.23
@@ -22,7 +22,7 @@ song:
   # Each note is defined by its pitch (string) and a duration multiplier
   # based on https://www.virtualsheetmusic.com/score/JingleBellsPf.html
   # For convenience there's a blank line between measures
-  bpm: 90
+  bpm: 120
   notes:
     - note: "d5"
       duration: 1.0

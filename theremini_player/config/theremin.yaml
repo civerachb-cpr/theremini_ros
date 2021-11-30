@@ -24,9 +24,9 @@ theremin:
     max_distance: 0.25
     control_axis: z
     control_mode: linear
-    x_offset: 0.0
-    y_offset: 0.02
-    z_offset: 0.02
+    x_offset: -0.15
+    y_offset: 0.1
+    z_offset: 0.05
     pitch_offset: 1.57079632679
     roll_offset: 0.0
     yaw_offset: 0.0
