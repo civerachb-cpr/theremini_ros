@@ -68,5 +68,5 @@ theremin:
 - `control_axis` one of `x`, `y`, or `z` to define the axis along with the end-effector moves relative to the antenna
   the pitch antenna should normally move vertically and the pitch antenna should be horizontally
 - `control_mode` unused, but reserved for future expansion to handle interpolation between desired notes
-- `{x|y|z}_offset` a fixed offset along each axis relative to the `antenna_frame`
-- `{roll|pitch|yaw}_offset` a fixed offset around each axis relative to the `antenna_frame`
+- `{x|y|z}_offset` a fixed offset along each axis relative to the move_group's planning frame
+- `{roll|pitch|yaw}_offset` a fixed offset around each axis relative to the move_group's planning frame
