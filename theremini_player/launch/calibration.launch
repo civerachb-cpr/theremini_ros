@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+  <rosparam command="load" file="$(find theremini_player)/config/theremin.yaml" />
+
+  <node name="theremini_calibration" pkg="theremini_player" type="calibrate">
+  </node>
+</launch>

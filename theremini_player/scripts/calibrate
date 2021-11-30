@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+"""
+Steps through the Theremini calibration process
+"""
+
+import rospy
+from theremini_player.calibrator import Calibrator
+
+if __name__=='__main__':
+    rospy.init_node('theremini_calibration')
+    player = Calibrator()
+    player.run()
